@@ -50,10 +50,17 @@
 </head>
 <body>
   <h1>Conversor de Moedas</h1>
+
   <form id="formConversor">
-    <input type="number" step="any" name="valor" placeholder="Valor" required />
-    <input type="text" name="moedaBase" placeholder="Moeda base (ex: BRL)" maxlength="3" required />
-    <input type="text" name="moedaDestino" placeholder="Moeda destino (ex: USD)" maxlength="3" required />
+    <label for="valor">Valor:</label>
+    <input type="number" id="valor" name="valor" step="0.01" min="0" required />
+
+    <label for="moedaBase">Moeda base:</label>
+    <select id="moedaBase" name="moedaBase" required></select>
+
+    <label for="moedaDestino">Moeda destino:</label>
+    <select id="moedaDestino" name="moedaDestino" required></select>
+
     <button type="submit">Converter</button>
   </form>
 
@@ -61,40 +68,78 @@
   <div id="erro"></div>
 
   <script>
+    
+    const moedas = [
+      { code: 'BRL', name: 'Real Brasileiro' },
+      { code: 'USD', name: 'Dólar Americano' },
+      { code: 'EUR', name: 'Euro' },
+      { code: 'JPY', name: 'Iene Japonês' },
+      { code: 'GBP', name: 'Libra Esterlina' },
+      { code: 'AUD', name: 'Dólar Australiano' },
+      { code: 'CAD', name: 'Dólar Canadense' },
+      { code: 'CHF', name: 'Franco Suíço' },
+      
+    ];
+
+const selectBase = document.getElementById('moedaBase');
+    const selectDestino = document.getElementById('moedaDestino');
+
+    function popularSelects() {
+      moedas.forEach(m => {
+        const optionBase = document.createElement('option');
+        optionBase.value = m.code;
+        optionBase.textContent = `${m.code} - ${m.name}`;
+        selectBase.appendChild(optionBase);
+
+        const optionDestino = document.createElement('option');
+        optionDestino.value = m.code;
+        optionDestino.textContent = `${m.code} - ${m.name}`;
+        selectDestino.appendChild(optionDestino);
+      });
+
+
+      selectBase.value = 'BRL';
+      selectDestino.value = 'USD';
+    }
+
+    popularSelects();
+
     const form = document.getElementById('formConversor');
-    const resultado = document.getElementById('resultado');
-    const erro = document.getElementById('erro');
+    const resultadoDiv = document.getElementById('resultado');
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      resultado.textContent = '';
-      erro.textContent = '';
 
-      const formData = new FormData(form);
-      const data = {
-        valor: formData.get('valor'),
-        moedaBase: formData.get('moedaBase'),
-        moedaDestino: formData.get('moedaDestino')
-      };
+      const valor = parseFloat(document.getElementById('valor').value);
+      const moedaBase = selectBase.value;
+      const moedaDestino = selectDestino.value;
+
+      if (moedaBase === moedaDestino) {
+        resultadoDiv.textContent = 'Por favor, escolha moedas diferentes.';
+        return;
+      }
+
+      resultadoDiv.textContent = 'Carregando...';
 
       try {
-        const response = await fetch('/converter', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        });
+        const response = await fetch(`/cotacao?from=${moedaBase}&to=${moedaDestino}&amount=${valor}`);
 
-        const json = await response.json();
-
-        if (response.ok) {
-          resultado.textContent = `${json.valorOriginal} ${json.moedaBase} = ${json.valorConvertido} ${json.moedaDestino}`;
-        } else {
-          erro.textContent = json.error || 'Erro desconhecido.';
+        if (!response.ok) {
+          throw new Error('Erro ao buscar cotação');
         }
-      } catch (error) {
-        erro.textContent = 'Erro ao comunicar com o servidor.';
+
+        const data = await response.json();
+
+        if (data.result !== undefined) {
+          resultadoDiv.textContent = `${valor.toFixed(2)} ${moedaBase} = ${data.result.toFixed(2)} ${moedaDestino}`;
+        } else {
+          resultadoDiv.textContent = 'Resposta inesperada do servidor.';
+        }
+      } catch (err) {
+        resultadoDiv.textContent = 'Erro: ' + err.message;
       }
     });
   </script>
+
 </body>
 </html>
