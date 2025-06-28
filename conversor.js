@@ -1,15 +1,12 @@
 const axios = require('axios');
 const readline = require('readline');
 
-async function obterCotacao(moedaBase) {
+async function obterCotacao(moedaBase, moedaDestino) {
   try {
-    const url = `https://api.exchangerate.host/latest?base=${moedaBase}`;
+    const url = `https://api.frankfurter.app/latest?from=${moedaBase}&to=${moedaDestino}`;
     const response = await axios.get(url);
-    if (response.data && response.data.rates) {
-      return response.data.rates;
-    } else {
-      throw new Error('Erro ao obter taxas de câmbio');
-    }
+    const taxa = response.data.rates[moedaDestino];
+    return taxa;
   } catch (error) {
     console.error('Erro na API:', error.message);
     return null;
@@ -17,16 +14,12 @@ async function obterCotacao(moedaBase) {
 }
 
 async function converter(valor, moedaBase, moedaDestino) {
-  const taxas = await obterCotacao(moedaBase);
-  if (!taxas) {
-    console.log('Não foi possível obter as taxas de câmbio.');
+  const cotacao = await obterCotacao(moedaBase, moedaDestino);
+  if (!cotacao) {
+    console.log('Não foi possível obter a cotação.');
     return;
   }
-  if (!taxas[moedaDestino]) {
-    console.log('Moeda destino não encontrada.');
-    return;
-  }
-  const cotacao = taxas[moedaDestino];
+
   const valorConvertido = valor * cotacao;
   console.log(`${valor} ${moedaBase} = ${valorConvertido.toFixed(2)} ${moedaDestino}`);
 }
@@ -36,11 +29,9 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-
 function pergunta(query) {
   return new Promise(resolve => rl.question(query, resolve));
 }
-
 
 async function main() {
   try {
@@ -48,7 +39,7 @@ async function main() {
     const moedaBase = (await pergunta('Digite a moeda base (ex: BRL): ')).toUpperCase();
     const moedaDestino = (await pergunta('Digite a moeda destino (ex: USD): ')).toUpperCase();
 
-    if(isNaN(parseFloat(valor))) {
+    if (isNaN(parseFloat(valor))) {
       console.log('Valor inválido. Digite um número.');
       rl.close();
       return;
@@ -61,6 +52,5 @@ async function main() {
     rl.close();
   }
 }
-
 
 main();
