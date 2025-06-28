@@ -21,21 +21,15 @@ app.post('/converter', async (req, res) => {
   }
 
   try {
-    const url = `https://api.frankfurter.app/latest?from=${from}&to=${to}&amount=${amount}`;
+    // Monta URL correta para API Frankfurter
+    const url = `https://api.frankfurter.app/latest?from=${moedaBase.toUpperCase()}&to=${moedaDestino.toUpperCase()}&amount=${valor}`;
     const response = await axios.get(url);
 
-    if (response.data.result !== "success") {
+    if (!response.data || !response.data.rates || !response.data.rates[moedaDestino.toUpperCase()]) {
       return res.status(500).json({ error: 'Erro ao obter taxas de câmbio.' });
     }
 
-    const taxas = response.data.rates;
-
-    if (!taxas[moedaDestino.toUpperCase()]) {
-      return res.status(400).json({ error: 'Moeda destino inválida.' });
-    }
-
-    const cotacao = taxas[moedaDestino.toUpperCase()];
-    const valorConvertido = parseFloat(valor) * cotacao;
+    const valorConvertido = response.data.rates[moedaDestino.toUpperCase()];
 
     return res.json({
       valorOriginal: parseFloat(valor),
@@ -44,6 +38,7 @@ app.post('/converter', async (req, res) => {
       valorConvertido: valorConvertido.toFixed(2)
     });
   } catch (error) {
+    console.error('Erro na API externa:', error.message);
     return res.status(500).json({ error: 'Erro na API externa.' });
   }
 });
