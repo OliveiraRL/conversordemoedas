@@ -3,9 +3,9 @@ const readline = require('readline');
 
 async function obterCotacao(moedaBase) {
   try {
-    const url = `https://open.er-api.com/v6/latest/${moedaBase}`;
+    const url = `https://api.exchangerate.host/latest?base=${moedaBase}`;
     const response = await axios.get(url);
-    if(response.data.result === "success") {
+    if (response.data && response.data.rates) {
       return response.data.rates;
     } else {
       throw new Error('Erro ao obter taxas de câmbio');

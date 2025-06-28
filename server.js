@@ -4,9 +4,6 @@ const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
 
 // Middleware para entender JSON e form data
 app.use(express.json());
