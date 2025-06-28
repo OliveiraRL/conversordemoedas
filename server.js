@@ -21,7 +21,7 @@ app.post('/converter', async (req, res) => {
   }
 
   try {
-    const url = `https://open.er-api.com/v6/latest/${moedaBase.toUpperCase()}`;
+    const url = `https://api.frankfurter.app/latest?from=${from}&to=${to}&amount=${amount}`;
     const response = await axios.get(url);
 
     if (response.data.result !== "success") {
