@@ -1,53 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Conversor de Moedas</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 400px;
-      margin: 40px auto;
-      padding: 10px;
-      background: #f0f0f0;
-      border-radius: 8px;
-    }
-    h1 {
-      text-align: center;
-      color: #333;
-    }
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    input, select, button {
-      padding: 10px;
-      font-size: 1rem;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-    button {
-      background: #007bff;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #0056b3;
-    }
-    #resultado {
-      margin-top: 20px;
-      font-weight: bold;
-      text-align: center;
-    }
-    #erro {
-      color: red;
-      text-align: center;
-    }
-  </style>
+
 </head>
+
 <body>
   <h1>Conversor de Moedas</h1>
 
@@ -68,7 +28,7 @@
   <div id="erro"></div>
 
   <script>
-    
+
     const moedas = [
       { code: 'BRL', name: 'Real Brasileiro' },
       { code: 'USD', name: 'Dólar Americano' },
@@ -78,10 +38,10 @@
       { code: 'AUD', name: 'Dólar Australiano' },
       { code: 'CAD', name: 'Dólar Canadense' },
       { code: 'CHF', name: 'Franco Suíço' },
-      
+
     ];
 
-const selectBase = document.getElementById('moedaBase');
+    const selectBase = document.getElementById('moedaBase');
     const selectDestino = document.getElementById('moedaDestino');
 
     function popularSelects() {
@@ -122,24 +82,33 @@ const selectBase = document.getElementById('moedaBase');
       resultadoDiv.textContent = 'Carregando...';
 
       try {
-        const response = await fetch(`/cotacao?from=${moedaBase}&to=${moedaDestino}&amount=${valor}`);
-
-        if (!response.ok) {
-          throw new Error('Erro ao buscar cotação');
-        }
+        const response = await fetch('/converter', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            valor,
+            moedaBase,
+            moedaDestino
+          })
+        });
 
         const data = await response.json();
 
-        if (data.result !== undefined) {
-          resultadoDiv.textContent = `${valor.toFixed(2)} ${moedaBase} = ${data.result.toFixed(2)} ${moedaDestino}`;
+        if (data.valorConvertido !== undefined) {
+          resultadoDiv.textContent = `${valor.toFixed(2)} ${moedaBase} = ${data.valorConvertido} ${moedaDestino}`;
         } else {
-          resultadoDiv.textContent = 'Resposta inesperada do servidor.';
+          resultadoDiv.textContent = 'Erro na conversão.';
         }
+
       } catch (err) {
         resultadoDiv.textContent = 'Erro: ' + err.message;
       }
     });
+          
   </script>
 
 </body>
+
 </html>
