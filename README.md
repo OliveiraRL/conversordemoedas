@@ -5,6 +5,9 @@
 Um conversor de moedas simples e interativo, desenvolvido com **Node.js**, **Express**, **HTML**, **CSS** e **JavaScript puro**. A aplicação utiliza a **API pública [Open Exchange Rates](https://open.er-api.com/)** para buscar taxas de câmbio em tempo real e realiza a conversão de moedas diretamente no navegador do usuário.
 
 ---
+![Preview do Conversor](img/capturadetelaconversordemoedas.png)
+
+---
 
 ## 🚀 Funcionalidades
 
