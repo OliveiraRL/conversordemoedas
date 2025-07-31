@@ -6,6 +6,12 @@ Um conversor de moedas simples e interativo, desenvolvido com **Node.js**, **Exp
 
 ---
 
+## 📸 Preview
+
+![screenshot](capturadetelaconversordemoedas.png)
+
+---
+
 ## 🚀 Funcionalidades
 
 - Conversão de qualquer moeda para outra (ex: BRL → USD, EUR → JPY)
