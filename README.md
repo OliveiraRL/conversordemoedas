@@ -2,7 +2,7 @@
 
 🔗 [🌐 Acesse a versão online aqui](https://conversordemoedas-z2w0.onrender.com)
 
-Um conversor de moedas simples e interativo, desenvolvido com **Node.js**, **Express**, **HTML**, **CSS** e **JavaScript puro**. A aplicação utiliza a **API pública [Open Exchange Rates](https://open.er-api.com/)** para buscar taxas de câmbio em tempo real e realiza a conversão de moedas diretamente no navegador do usuário.
+Um conversor de moedas simples e interativo, desenvolvido com **Node.js**, **Express**, **HTML**, **CSS** e **JavaScript puro**. A aplicação utiliza a **API pública [Frankfurter](https://www.frankfurter.app/)** para buscar taxas de câmbio em tempo real e realiza a conversão diretamente no navegador do usuário.
 
 ---
 
@@ -14,26 +14,32 @@ Um conversor de moedas simples e interativo, desenvolvido com **Node.js**, **Exp
 
 ## 🚀 Funcionalidades
 
-- Conversão de qualquer moeda para outra (ex: BRL → USD, EUR → JPY)
-- Consulta automática à taxa de câmbio atual
-- Interface web amigável com validação de campos
-- Compatível com navegador (sem precisar instalar)
-- Backend com Node.js + Express
-- Pronto para deploy em plataformas como Heroku, Render ou Railway
+- 🔁 Conversão entre diversas moedas internacionais (ex: BRL → USD, EUR → JPY)
+- ⚡ Consulta automática da taxa de câmbio atual
+- 💻 Interface web amigável e responsiva
+- ✅ Validação de campos obrigatórios
+- 🌐 Aplicação 100% web, sem necessidade de instalação
+- 🧠 Backend leve e eficiente com Node.js + Express
+- ☁️ Pronto para deploy em plataformas como Render, Railway ou Heroku
 
 ---
 
 ## 🛠️ Tecnologias e ferramentas utilizadas
 
-| Tecnologia     | Função                                      |
-|----------------|---------------------------------------------|
-| **Node.js**    | Ambiente de execução JavaScript no backend  |
-| **Express.js** | Framework para criar a API e o servidor     |
-| **Axios**      | Cliente HTTP para consumir API externa      |
-| **HTML5**      | Estrutura da interface web                  |
-| **CSS3**       | Estilização da página                       |
-| **JavaScript** | Lógica do formulário e chamadas à API       |
-| **API ER Exchange** | Fonte das taxas de câmbio           |
+| Tecnologia         | Função                                      |
+|--------------------|---------------------------------------------|
+| **Node.js**        | Ambiente de execução JavaScript no backend  |
+| **Express.js**     | Framework leve para servidor HTTP           |
+| **Axios**          | Cliente HTTP para requisição à API externa  |
+| **HTML5**          | Estrutura da interface                      |
+| **CSS3**           | Estilização visual                          |
+| **JavaScript (Vanilla)** | Lógica do frontend e requisições       |
+| **Frankfurter API**| Fonte das taxas de câmbio                   |
+
+---
+
+## 📂 Estrutura de Diretórios
+
 
 ---
 
